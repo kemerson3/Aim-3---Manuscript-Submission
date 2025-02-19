@@ -19,10 +19,14 @@ library(pairwiseAdonis)
 
 ##Tutorial from package designers: https://benjjneb.github.io/dada2/tutorial.html
 ##Youtube tutorial walkthrough with tree construction: https://www.youtube.com/watch?v=wV5_z7rR6yw&t=2574s
+## NOTE TO AUTHOR: First & Last names have been redacted for Anonymous Peer Review. They have
+## Been replaced with 'FIRST' and 'LAST', respectively. To run code, find & replace FIRST and LAST with
+## respective first and last names. 
+
 
 #****set working directory/folder to the one that contains the fastq files*******
-setwd("C:/BaseSpace/MISEQ792_Kyle-Emerson_45704-394461778/FASTQ_Generation_2023-08-03_04_45_31Z-685575895 - Gut + Skin")
-path <- "C:/BaseSpace/MISEQ792_Kyle-Emerson_45704-394461778/FASTQ_Generation_2023-08-03_04_45_31Z-685575895 - Gut + Skin" 
+setwd("C:/BaseSpace/MISEQ792_FIRST-LAST_45704-394461778/FASTQ_Generation_2023-08-03_04_45_31Z-685575895 - Gut + Skin")
+path <- "C:/BaseSpace/MISEQ792_FIRST-LAST_45704-394461778/FASTQ_Generation_2023-08-03_04_45_31Z-685575895 - Gut + Skin" 
 list.files(path) #list the files within that directory/folder within the path
 
 # Forward and reverse fastq filenames have format: 
@@ -221,11 +225,11 @@ list(track)
 #and place it in the directory with the fastq files.
 
 file.choose()
-taxa <- assignTaxonomy(seqtab.nochim1, "C:\\BaseSpace\\MISEQ792_Kyle-Emerson_45704-394461778\\FASTQ_Generation_2023-08-03_04_45_31Z-685575895 - Gut + Skin\\silva_nr99_v138.1_train_set.fa.gz", multithread=FALSE)
+taxa <- assignTaxonomy(seqtab.nochim1, "C:\\BaseSpace\\MISEQ792_FIRST-LAST_45704-394461778\\FASTQ_Generation_2023-08-03_04_45_31Z-685575895 - Gut + Skin\\silva_nr99_v138.1_train_set.fa.gz", multithread=FALSE)
 #Assigning the taxonomy and adding the species level will take a considerable
 #amount of time. Best to run the code and check back later. 
 
-write.table(taxa, file = "Emerson Aim 3 - Taxa - Gut Skin Water.txt", sep="\t")
+write.table(taxa, file = "LAST Aim 3 - Taxa - Gut Skin Water.txt", sep="\t")
 #Creates a txt file in the path listed of the taxa information. Note:
 #this goes into your designated R folder (for me: Aim 3 - Stress and the Microbiota)
 
@@ -264,7 +268,7 @@ fitGTR <- optim.pml(fitGTR, model = "GTR", optInv = TRUE, optGamma = TRUE,
 ### Have my tables (unrarefied) and my tree
 theme_set(theme_bw())
 file.choose()
-meta_full <- read.csv("C:\\R\\Aim 3 - Stress and the Microbiota\\Emerson Aim 3 - Microbial Map - Gut, Skin, Water.csv")
+meta_full <- read.csv("C:\\R\\Aim 3 - Stress and the Microbiota\\LAST Aim 3 - Microbial Map - Gut, Skin, Water.csv")
 #This is my map file. This file is necessary to give R a point of reference
 #to merge files downstream. The most important consistency is including the
 #sample names that are identical across all files
@@ -331,20 +335,20 @@ getslots.phyloseq(ps)
 #our completed phyloseq object
 
 ########### Cleaning up my data in R (https://www.youtube.com/watch?v=e3rKYipvdJo)
-#write.table(otu_table(ps), file = "Emerson Aim 3 - gut, water & skin otutable.csv", sep = ",")
-#write.table(tax_table(ps), file = "Emerson Aim 3 - gut, water & skin taxatable.csv", sep = ",")
-#write.table(refseq(ps), file = "Emerson Aim 3 - gut, water & skin refseqtable.csv", sep = ",")
+#write.table(otu_table(ps), file = "LAST Aim 3 - gut, water & skin otutable.csv", sep = ",")
+#write.table(tax_table(ps), file = "LAST Aim 3 - gut, water & skin taxatable.csv", sep = ",")
+#write.table(refseq(ps), file = "LAST Aim 3 - gut, water & skin refseqtable.csv", sep = ",")
 
 ps_ra = transform_sample_counts(ps,function(x){x/sum(x)})
-#write.table(otu_table(ps_ra), file = "Emerson Aim 3 - gut, water & skin relabundtable.csv", sep = ",")
+#write.table(otu_table(ps_ra), file = "LAST Aim 3 - gut, water & skin relabundtable.csv", sep = ",")
 #This is our relative abundance table. 
 
 file.choose()
-otu_counts <- read.csv("C:\\R\\Aim 3 - Stress and the Microbiota\\Emerson Aim 3 - gut, water & skin otutable.csv") %>%
+otu_counts <- read.csv("C:\\R\\Aim 3 - Stress and the Microbiota\\LAST Aim 3 - gut, water & skin otutable.csv") %>%
   pivot_longer(-Sample_ID, names_to="ASV", values_to="count")
 
 file.choose()
-taxonomy <- read.csv("C:\\R\\Aim 3 - Stress and the Microbiota\\Emerson Aim 3 - gut, water & skin taxatable.csv") %>%
+taxonomy <- read.csv("C:\\R\\Aim 3 - Stress and the Microbiota\\LAST Aim 3 - gut, water & skin taxatable.csv") %>%
   filter(Kingdom != 'Archaea') %>%
   filter(Kingdom != "Eukaryota")
 
@@ -379,7 +383,7 @@ phyla_abundance <- otu_rel_abund %>%
   summarize(rel_abund = sum(rel_abund)) %>%
   pivot_wider(names_from = "taxon", values_from = "rel_abund")
 
-#write.table(phyla_abundance, file = "Emerson Aim 3 - gut, skin & water phyla abundance.csv", sep = "," )  
+#write.table(phyla_abundance, file = "LAST Aim 3 - gut, skin & water phyla abundance.csv", sep = "," )  
 
 ############### Relative Abundance data frame: Genus
 genus_abundance <- otu_rel_abund %>%
@@ -389,7 +393,7 @@ genus_abundance <- otu_rel_abund %>%
   summarize(rel_abund = sum(rel_abund)) %>%
   pivot_wider(names_from = "taxon", values_from = "rel_abund")
 
-#write.table(genus_abundance, file = "Emerson Aim 3 - gut, skin & water genus abundance.csv", sep = "," )
+#write.table(genus_abundance, file = "LAST Aim 3 - gut, skin & water genus abundance.csv", sep = "," )
 
 #Check to make sure our relative abundances add up to 1
 otu_rel_abund %>%
@@ -425,7 +429,7 @@ rarefied_asv_table_full <- rarefy_asv_full %>%
   column_to_rownames("Sample_ID")
 # Our new, rarefied (1124) ASV counts table for gut and water samples without archaea
 
-#write.table(rarefied_asv_table_full, file = "Emerson Aim 3 - rarefied asv table gut, skin & water.csv", sep = "," )
+#write.table(rarefied_asv_table_full, file = "LAST Aim 3 - rarefied asv table gut, skin & water.csv", sep = "," )
 
 ####### Beta Diversity - Gut, Skin & Water Samples
 ##Bray Curtis
@@ -503,6 +507,62 @@ anova(bd_gutmicro)
 # Groups     1 0.006862 0.0068622  1.1534 0.2945
 # Residuals 22 0.130885 0.0059493
 
+##### New for revisions (KE 2-19-25)
+##Jaccard Analysis of Gut, Skin and Water Samples
+
+set.seed(19950406)
+dist_full_jaccard <- avgdist(distance_matrix_full, dmethod = "jaccard", binary = TRUE, sample = 1124)
+set.seed(17)
+nmds_full_jaccard <- metaMDS(dist_full_jaccard)
+
+metadata_nmds_full_jaccard <- nmds_full_jaccard$points %>%
+  as_tibble(rownames = "Sample_ID") %>%
+  inner_join(., meta_full, by = "Sample_ID") 
+
+Pond_Water <- c("Natural", "Autoclaved")
+Stress <- c("Vehicle Control", "Predator Cues", "CORT")
+
+metadata_nmds_full_jaccard %>%
+  ggplot(aes(x = MDS1, y = MDS2, color = Source)) +
+  geom_point(aes(shape = Source, size = 5)) +
+  theme_classic() +
+  theme(axis.text = element_text(face = "bold",size = 14))  +
+  theme(axis.title = element_text(face = "bold",size = 16)) +
+  labs(x = "Jaccard NMDS 1", y = "Jaccard NMDS 2") +
+  scale_color_manual(labels = c("Gut", "Skin", "Water"),
+                     values = c("pink", "green", "skyblue"),
+                     name = "Source") +
+  stat_ellipse() +
+  theme(legend.text = element_text(size = 14),
+        legend.title = element_text(face = "bold", size = 16)) +
+  guides(colour = guide_legend(override.aes = list(size=5))) +
+  guides(size = "none")
+
+adonis2(dist_full_jaccard~metadata_nmds_full_jaccard$Source)
+
+# # adonis2(formula = dist_full_jaccard ~ metadata_nmds_full$Source)
+#                           Df SumOfSqs      R2      F Pr(>F)    
+# metadata_nmds_full$Source  2   2.9465 0.16687 4.7069  0.001 ***
+# Residual                  47  14.7109 0.83313                  
+# Total                     49  17.6574 1.00000  
+
+
+pairwise.adonis(dist_full_jaccard, metadata_nmds_full_jaccard$Source)
+#           pairs Df SumsOfSqs  F.Model         R2 p.value p.adjusted sig
+# 1   Gut vs Skin  1  1.280092 4.261466 0.09211697   0.001      0.003   *
+# 2  Gut vs Water  1  1.745766 5.701282 0.16917108   0.001      0.003   *
+# 3 Skin vs Water  1  1.485667 4.331490 0.15288606   0.001      0.003   *
+
+bd_gws_jac <- betadisper(dist_full_jaccard, metadata_nmds_full_jaccard$Source)
+anova(bd_gws_jac)
+# # Response: Distances
+#           Df   Sum Sq   Mean Sq F value    Pr(>F)    
+# Groups     2 0.030347 0.0151737  8.6763 0.0006209 ***
+# Residuals 47 0.082197 0.0017489   
+
+##Significant dispersion differences, water with the greatest
+
+
 ######### Gut vs. Skin - Bray Curtis 
 
 rarefy_asv_gs <- rarefy_asv_full %>%
@@ -528,7 +588,7 @@ rarefied_asv_table_gs <- rarefy_asv_gs %>%
   column_to_rownames("Sample_ID")
 #Our new, rarefied (11880) ASV counts table for gut and skin samples without archaea
 
-#write.table(rarefied_asv_table_gs, file = "Emerson Aim 3 - rarefied asv table gut & skin.csv", sep = "," )
+#write.table(rarefied_asv_table_gs, file = "LAST Aim 3 - rarefied asv table gut & skin.csv", sep = "," )
 
 distance_matrix_gs <- rarefy_asv_gs %>%
   group_by(Sample_ID) %>%
@@ -585,8 +645,48 @@ adonis2(dist_gs~metadata_nmds_gs$Source)
 #                         Df  SumOfSqs      R2    F    Pr(>F)    
 # metadata_nmds_gs$Source  1   2.3524 0.20112 10.574  0.001 ***
 # Residual                42   9.3439 0.79888                  
-# Total                   43  11.6963 1.00000                  
+# Total                   43  11.6963 1.00000 
 
+
+### New for revisions (KE 2/19/2025)
+### Gut vs. Skin (Jaccard Analysis)
+
+set.seed(19950406)
+dist_gs_jaccard <- avgdist(distance_matrix_gs, dmethod = "jaccard", binary = TRUE, sample = 11880)
+set.seed(17)
+nmds_gs_jaccard <- metaMDS(dist_gs_jaccard)
+
+meta_gs_jaccard <- meta_full %>%
+  filter(Source != 'Water')
+
+metadata_nmds_gs_jaccard <- nmds_gs_jaccard$points %>%
+  as_tibble(rownames = "Sample_ID") %>%
+  inner_join(., meta_gs, by = "Sample_ID") 
+
+Pond_Water <- c("Natural", "Autoclaved")
+Stress <- c("Vehicle Control", "Predator Cues", "CORT")
+
+metadata_nmds_gs_jaccard %>%
+  ggplot(aes(x = MDS1, y = MDS2, color = Source)) +
+  geom_point(aes(shape = Source, size = 3)) +
+  theme_classic() +
+  theme(axis.text = element_text(face = "bold",size = 14))  +
+  theme(axis.title = element_text(face = "bold",size = 16)) +
+  labs(x = "Jaccard NMDS 1", y = "Jaccard NMDS 2") +
+  scale_color_manual(labels = c("Gut", "Skin"),
+                     values = c("pink", "green"),
+                     name = "Source") +
+  stat_ellipse() +
+  theme(legend.text = element_text(size = 10),
+        legend.title = element_text( size = 12))
+
+adonis2(dist_gs_jaccard~metadata_nmds_gs_jaccard$Source)
+
+# adonis2(formula = dist_gs_jaccard ~ metadata_nmds_gs_jaccard$Source)
+#                                 Df SumOfSqs    R2      F Pr(>F)    
+# metadata_nmds_gs_jaccard$Source  1   1.2786 0.092 4.2557  0.001 ***
+# Residual                        42  12.6186 0.908                  
+# Total                           43  13.8972 1.000               
 
 ######## Gut Samples: Bray Curtis 
 
@@ -609,7 +709,7 @@ rarefied_asv_table_gut <- rarefy_asv_gut %>%
   column_to_rownames("Sample_ID")
 #Our new, rarefied (66378) ASV counts table for gut samples without archaea
 
-#write.table(rarefied_asv_table_gut, file = "Emerson Aim 3 - rarefied asv table - gut.csv", sep = "," )
+#write.table(rarefied_asv_table_gut, file = "LAST Aim 3 - rarefied asv table - gut.csv", sep = "," )
 
 distance_matrix_gut <- rarefy_asv_gut %>%
   group_by(Sample_ID) %>%
@@ -699,6 +799,92 @@ pairwise.adonis(dist_gut, metadata_nmds_gut$Stressor)
 # 3 B vs C  1 0.1796172 0.9093417 0.0609914   0.454       1.00 
 
 
+####### Updated Code for revisions(KE - 2-19-25)
+####### Beta Diversity - Gut Samples
+##Jaccard - starting with the same distance matrix used for Bray Curtis
+
+set.seed(19950406)
+dist_gut_jaccard <- avgdist(distance_matrix_gut, dmethod = "jaccard", binary =TRUE, sample = 66378)
+set.seed(17)
+nmds_gut_jaccard <- metaMDS(dist_gut_jaccard)
+##have to specify "binary = TRUE" for jaccard analysis to make sure that the species input is binary
+##https://stats.stackexchange.com/questions/242110/nmds-from-jaccard-and-bray-curtis-identical-is-that-a-bad-thing
+
+metadata_nmds_gut_jaccard <- nmds_gut_jaccard$points %>%
+  as_tibble(rownames = "Sample_ID") %>%
+  inner_join(., meta_gut, by = "Sample_ID") 
+
+Pond_Water <- c("Natural", "Autoclaved")
+Stress <- c("Vehicle Control", "Predator Cues", "CORT")
+
+#### Ordination plot for Jaccard Analysis
+metadata_nmds_gut_jaccard %>%
+  ggplot(aes(x = MDS1, y = MDS2, color = factor(Stressor, level=c('B', 'A','C')))) +
+  geom_point(aes(shape = Microbial_Trtmt, size = 5)) +
+  theme_classic() +
+  theme(axis.text = element_text(face = "bold",size = 14))  +
+  theme(axis.title = element_text(face = "bold",size = 16)) +
+  labs(x = "Jaccard NMDS 1", y = "Jaccard NMDS 2") +
+  scale_color_manual(labels = c("Vehicle", "Predator", "CORT"),
+                     values = c("gray81", "darkred", "deepskyblue1"),
+                     name = "Stressor") +
+  scale_shape_manual(labels = c("Natural", "Autoclaved"),
+                     values = c(16,18),
+                     name = "Pond Water") +
+  theme(legend.text = element_text(size = 14),
+        legend.title = element_text(face = "bold", size = 16)) +
+  guides(colour = guide_legend(override.aes = list(size=5))) +
+  guides(shape = guide_legend(override.aes = list(size = 5))) +
+  guides(size = "none")
+
+##Plot of our Jaccard NMDS (rarefied)
+## Beta Diversity Analysis: https://www.youtube.com/watch?v=oLf0EpMJ4yA
+adonis2(dist_gut_jaccard~metadata_nmds_gut_jaccard$Microbial_Trtmt*metadata_nmds_gut_jaccard$Stressor)
+#PERMANOVA. Significant on both levels, with interaction
+
+# Number of permutations: 999
+
+# adonis2(formula = dist_gut_jaccard ~ metadata_nmds_gut_jaccard$Microbial_Trtmt * metadata_nmds_gut_jaccard$Stressor)
+#                                                                              Df SumOfSqs      R2      F    Pr(>F)    
+# metadata_nmds_gut_jaccard$Microbial_Trtmt                                     1   1.4880 0.22148 6.8101  0.001 ***
+# metadata_nmds_gut_jaccard$Stressor                                            2   0.6575 0.09786 1.5046  0.036 *  
+# metadata_nmds_gut_jaccard$Microbial_Trtmt:metadata_nmds_gut_jaccard$Stressor  2   0.6400 0.09526 1.4646  0.046 *  
+# Residual                                                                     18   3.9331 0.58540                  
+# Total                                                                        23   6.7187 1.00000                     
+# ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+bd_micro_jac <- betadisper(dist_gut_jaccard, metadata_nmds_gut_jaccard$Microbial_Trtmt)
+anova(bd_micro_jac)
+#Our Permdisp, significant for microbial treatment
+
+# Analysis of Variance Table
+# 
+# Response: Distances
+#           Df   Sum Sq  Mean Sq  F value    Pr(>F)    
+# Groups     1 0.034506 0.034506  22.893 8.886e-05 ***
+# Residuals 22 0.033160 0.001507  
+
+bd_stressor_jac <- betadisper(dist_gut_jaccard, metadata_nmds_gut_jaccard$Stressor)
+anova(bd_stressor_jac)
+#Nonsignificant for stessor 
+
+# Analysis of Variance Table
+# 
+# Response: Distances
+#           Df   Sum Sq   Mean Sq F value Pr(>F)
+# Groups     2 0.004848 0.0024239  0.7061 0.5049
+# Residuals 21 0.072084 0.0034326 
+
+
+#https://github.com/pmartinezarbizu/pairwiseAdonis
+pairwise.adonis(dist_gut_jaccard, metadata_nmds_gut_jaccard$Stressor)
+#    pairs Df SumsOfSqs  F.Model         R2 p.value p.adjusted sig
+# 1 A vs B  1 0.3057336 1.048575 0.06967935   0.269      0.807    
+# 2 A vs C  1 0.3191129 1.148775 0.07583286   0.221      0.663    
+# 3 B vs C  1 0.3614240 1.218853 0.08008838   0.135      0.405 
+
+
 ######## Skin Samples: Bray Curtis 
 
 rarefy_asv_skin <- rarefy_asv_full %>%
@@ -720,7 +906,7 @@ rarefied_asv_table_skin <- rarefy_asv_skin %>%
   column_to_rownames("Sample_ID")
 #Our new, rarefied (11880) ASV counts table for skin samples without archaea
 
-#write.table(rarefied_asv_table_skin, file = "Emerson Aim 3 - rarefied asv table - skin.csv", sep = "," )
+#write.table(rarefied_asv_table_skin, file = "LAST Aim 3 - rarefied asv table - skin.csv", sep = "," )
 
 distance_matrix_skin <- rarefy_asv_skin %>%
   group_by(Sample_ID) %>%
@@ -804,6 +990,92 @@ pairwise.adonis(dist_skin, metadata_nmds_skin$Stressor)
 # 3 B vs C  1 0.1977131 0.7864382 0.05704433   0.674          1
 
 
+####### Updated Code for revisions(KE - 2-19-25)
+####### Beta Diversity - Skin Samples
+##Jaccard - starting with the same distance matrix used for Bray Curtis
+
+set.seed(19950406)
+dist_skin_jaccard <- avgdist(distance_matrix_skin, dmethod = "jaccard", binary = TRUE, sample = 11880)
+set.seed(17)
+nmds_skin_jaccard <- metaMDS(dist_skin_jaccard)
+##have to specify "binary = TRUE" for jaccard analysis to make sure that the species input is binary
+##https://stats.stackexchange.com/questions/242110/nmds-from-jaccard-and-bray-curtis-identical-is-that-a-bad-thing
+
+metadata_nmds_skin_jaccard <- nmds_skin_jaccard$points %>%
+  as_tibble(rownames = "Sample_ID") %>%
+  inner_join(., meta_skin, by = "Sample_ID") 
+
+Pond_Water <- c("Natural", "Autoclaved")
+Stress <- c("Vehicle Control", "Predator Cues", "CORT")
+
+###Jaccard Ordination plot for skin Samples 
+
+metadata_nmds_skin_jaccard %>%
+  ggplot(aes(x = MDS1, y = MDS2, color = factor(Stressor, level=c('B', 'A','C')))) +
+  geom_point(aes(shape = Microbial_Trtmt, size = 3)) +
+  theme_classic() +
+  theme(axis.text = element_text(face = "bold",size = 14))  +
+  theme(axis.title = element_text(face = "bold",size = 16)) +
+  labs(x = "Jaccard NMDS 1", y = "Jaccard NMDS 2") +
+  scale_color_manual(labels = c("Vehicle", "Predator", "CORT"),
+                     values = c("gray81", "darkred", "deepskyblue1"),
+                     name = "Pond Water") +
+  scale_shape_manual(labels = c("Natural", "Autoclaved"),
+                     values = c(16,18),
+                     name = "Pond Water") +
+  theme(legend.text = element_text(size = 14),
+        legend.title = element_text(face = "bold", size = 16)) +
+  guides(colour = guide_legend(override.aes = list(size=5))) +
+  guides(shape = guide_legend(override.aes = list(size = 5))) +
+  guides(size = "none")
+##Plot of our Jaccard NMDS (rarefied)
+
+adonis2(dist_skin_jaccard~metadata_nmds_skin_jaccard$Microbial_Trtmt*metadata_nmds_skin_jaccard$Stressor)
+#PERMANOVA. Microbial Trtmt Significant
+#                                                              
+# Permutation: free
+# Number of permutations: 999
+# 
+# adonis2(formula = dist_skin_jaccard ~ metadata_nmds_skin_jaccard$Microbial_Trtmt * metadata_nmds_skin_jaccard$Stressor)
+#                                                                                Df SumOfSqs      R2      F   Pr(>F)    
+# metadata_nmds_skin_jaccard$Microbial_Trtmt                                      1   0.7083 0.11496 2.3971  0.001 ***
+# metadata_nmds_skin_jaccard$Stressor                                             2   0.6575 0.10672 1.1127  0.148    
+# metadata_nmds_skin_jaccard$Microbial_Trtmt:metadata_nmds_skin_jaccard$Stressor  2   0.6587 0.10691 1.1147  0.152    
+# Residual                                                                       14   4.1365 0.67140                  
+# Total                                                                          19   6.1609 1.00000                  
+# ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+bd_micro_skin_jac <- betadisper(dist_skin_jaccard, metadata_nmds_skin_jaccard$Microbial_Trtmt)
+anova(bd_micro_skin_jac)
+#Our Permdisp, significant for microbial treatment
+
+# #Analysis of Variance Table
+# 
+# Response: Distances
+#           Df   Sum Sq   Mean Sq  F value    Pr(>F)   
+# Groups     1 0.014856 0.0148558  14.118 0.001442 **
+# Residuals 18 0.018940 0.0010522  
+
+bd_stressor_skin_jac <- betadisper(dist_skin_jaccard, metadata_nmds_skin_jaccard$Stressor)
+anova(bd_stressor_skin_jac)
+#Nonsignificant for stessor
+
+# Analysis of Variance Table
+# 
+# Response: Distances
+#           Df    Sum Sq   Mean Sq F value Pr(>F)
+# Groups     2 0.0028984 0.0014492  1.0357 0.3763
+# Residuals 17 0.0237875 0.0013993 
+
+pairwise.adonis(dist_skin_jaccard, metadata_nmds_skin_jaccard$Stressor)
+# #    pairs Df SumsOfSqs   F.Model         R2 p.value   p.adjusted sig
+# 1   A vs B  1 0.3185537 0.9693018 0.08098232   0.472      1.000    
+# 2   A vs C  1 0.3736543 1.1720754 0.10491116   0.142      0.426    
+# 3   B vs C  1 0.2972092 0.9169612 0.06588803   0.696      1.000  
+
+
+
 ############### Relative Abundance Plots - Water Samples
 ## https://www.youtube.com/watch?v=NVym44SdcaE&t=309s 
 ## Making stacked barcharts for relative abundance
@@ -811,9 +1083,9 @@ pairwise.adonis(dist_skin, metadata_nmds_skin$Stressor)
 otu_rel_abund_water <- otu_rel_abund %>%
   filter(Source != 'Skin') %>%
   filter(Source != 'Gut') %>%
-  filter(Sample_ID != 'Kyle073-KE-Blank') %>%
-  filter(Sample_ID != 'Kyle074-PCR1Blank1') %>%
-  filter(Sample_ID != 'Kyle075-PCR1Blank2') %>%
+  filter(Sample_ID != 'FIRST073-KE-Blank') %>%
+  filter(Sample_ID != 'FIRST074-PCR1Blank1') %>%
+  filter(Sample_ID != 'FIRST075-PCR1Blank2') %>%
   filter(level =="Phylum") 
 
 otu_rel_abund_water %>%
@@ -890,9 +1162,9 @@ Pond_Water_Rel <- c("Natural", "Autoclaved", "Pond Water")
 
 otu_rel_abund_gw <- otu_rel_abund %>%
   filter(Source != 'Skin') %>%
-  filter(Sample_ID != 'Kyle073-KE-Blank') %>%
-  filter(Sample_ID != 'Kyle074-PCR1Blank1') %>%
-  filter(Sample_ID != 'Kyle075-PCR1Blank2') %>%
+  filter(Sample_ID != 'FIRST073-KE-Blank') %>%
+  filter(Sample_ID != 'FIRST074-PCR1Blank1') %>%
+  filter(Sample_ID != 'FIRST075-PCR1Blank2') %>%
   filter(level =="Phylum") 
 
 otu_rel_abund_gw %>%
@@ -966,9 +1238,9 @@ inner_join(taxon_rel_abund_gw, taxon_pool_gw, by = "taxon") %>%
 
 taxon_rel_abund_gutmicro <- otu_rel_abund_gw %>%
   filter(level =="Phylum") %>%
-  filter(Sample_ID != 'Kyle073-KE-Blank') %>%
-  filter(Sample_ID != 'Kyle074-PCR1Blank1') %>%
-  filter(Sample_ID != 'Kyle075-PCR1Blank2') %>%
+  filter(Sample_ID != 'FIRST073-KE-Blank') %>%
+  filter(Sample_ID != 'FIRST074-PCR1Blank1') %>%
+  filter(Sample_ID != 'FIRST075-PCR1Blank2') %>%
   group_by(Microbial_Trtmt, Sample_ID, taxon) %>%
   summarize(rel_abund = sum(rel_abund), .groups="drop") %>%
   group_by(Microbial_Trtmt, taxon) %>%
@@ -1015,15 +1287,15 @@ inner_join(taxon_rel_abund_gutmicro, taxon_pool_gutmicro, by = "taxon") %>%
 #### Relative Abundance - Stressor Trtmt (gut samples)
 
 taxon_rel_abund_gutstressor <- otu_rel_abund_gw %>%
-  filter(Sample_ID != 'Kyle073-KE-Blank') %>%
-  filter(Sample_ID != 'Kyle074-PCR1Blank1') %>%
-  filter(Sample_ID != 'Kyle075-PCR1Blank2') %>%
-  filter(Sample_ID != 'Kyle061-NPW1') %>%
-  filter(Sample_ID != 'Kyle061-NPW2') %>%
-  filter(Sample_ID != 'Kyle061-NPW3') %>%
-  filter(Sample_ID != 'Kyle061-NPW4') %>%
-  filter(Sample_ID != 'Kyle061-NPW5') %>%
-  filter(Sample_ID != 'Kyle061-NPW6') %>%
+  filter(Sample_ID != 'FIRST073-KE-Blank') %>%
+  filter(Sample_ID != 'FIRST074-PCR1Blank1') %>%
+  filter(Sample_ID != 'FIRST075-PCR1Blank2') %>%
+  filter(Sample_ID != 'FIRST061-NPW1') %>%
+  filter(Sample_ID != 'FIRST061-NPW2') %>%
+  filter(Sample_ID != 'FIRST061-NPW3') %>%
+  filter(Sample_ID != 'FIRST061-NPW4') %>%
+  filter(Sample_ID != 'FIRST061-NPW5') %>%
+  filter(Sample_ID != 'FIRST061-NPW6') %>%
   filter(level =="Phylum") %>%
   group_by(Stressor, Sample_ID, taxon) %>%
   summarize(rel_abund = sum(rel_abund), .groups="drop") %>%
@@ -1078,10 +1350,10 @@ Pond_Water_Rel <- c("Natural", "Autoclaved", "Pond Water")
 
 otu_rel_abund_sw <- otu_rel_abund %>%
   filter(Source != 'Gut') %>%
-  filter(Sample_ID != 'Kyle073-KE-Blank') %>%
-  filter(Sample_ID != 'Kyle074-PCR1Blank1') %>%
-  filter(Sample_ID != 'Kyle075-PCR1Blank2') %>%
-  filter(Sample_ID != 'Kyle039-AA301S') %>%
+  filter(Sample_ID != 'FIRST073-KE-Blank') %>%
+  filter(Sample_ID != 'FIRST074-PCR1Blank1') %>%
+  filter(Sample_ID != 'FIRST075-PCR1Blank2') %>%
+  filter(Sample_ID != 'FIRST039-AA301S') %>%
   filter(level =="Phylum") 
 
 otu_rel_abund_sw %>%
@@ -1151,10 +1423,10 @@ inner_join(taxon_rel_abund_sw, taxon_pool_sw, by = "taxon") %>%
 
 taxon_rel_abund_skinmicro <- otu_rel_abund_sw %>%
   filter(level =="Phylum") %>%
-  filter(Sample_ID != 'Kyle073-KE-Blank') %>%
-  filter(Sample_ID != 'Kyle074-PCR1Blank1') %>%
-  filter(Sample_ID != 'Kyle075-PCR1Blank2') %>%
-  filter(Sample_ID != 'Kyle039-AA301S') %>%
+  filter(Sample_ID != 'FIRST073-KE-Blank') %>%
+  filter(Sample_ID != 'FIRST074-PCR1Blank1') %>%
+  filter(Sample_ID != 'FIRST075-PCR1Blank2') %>%
+  filter(Sample_ID != 'FIRST039-AA301S') %>%
   group_by(Microbial_Trtmt, Sample_ID, taxon) %>%
   summarize(rel_abund = sum(rel_abund), .groups="drop") %>%
   group_by(Microbial_Trtmt, taxon) %>%
@@ -1201,16 +1473,16 @@ inner_join(taxon_rel_abund_skinmicro, taxon_pool_skinmicro, by = "taxon") %>%
 #### Relative Abundance - Stressor Trtmt (skin samples)
 
 taxon_rel_abund_skinstressor <- otu_rel_abund_sw %>%
-  filter(Sample_ID != 'Kyle073-KE-Blank') %>%
-  filter(Sample_ID != 'Kyle074-PCR1Blank1') %>%
-  filter(Sample_ID != 'Kyle075-PCR1Blank2') %>%
-  filter(Sample_ID != 'Kyle061-NPW1') %>%
-  filter(Sample_ID != 'Kyle061-NPW2') %>%
-  filter(Sample_ID != 'Kyle061-NPW3') %>%
-  filter(Sample_ID != 'Kyle061-NPW4') %>%
-  filter(Sample_ID != 'Kyle061-NPW5') %>%
-  filter(Sample_ID != 'Kyle061-NPW6') %>%
-  filter(Sample_ID != 'Kyle039-AA301S') %>%
+  filter(Sample_ID != 'FIRST073-KE-Blank') %>%
+  filter(Sample_ID != 'FIRST074-PCR1Blank1') %>%
+  filter(Sample_ID != 'FIRST075-PCR1Blank2') %>%
+  filter(Sample_ID != 'FIRST061-NPW1') %>%
+  filter(Sample_ID != 'FIRST061-NPW2') %>%
+  filter(Sample_ID != 'FIRST061-NPW3') %>%
+  filter(Sample_ID != 'FIRST061-NPW4') %>%
+  filter(Sample_ID != 'FIRST061-NPW5') %>%
+  filter(Sample_ID != 'FIRST061-NPW6') %>%
+  filter(Sample_ID != 'FIRST039-AA301S') %>%
   filter(level =="Phylum") %>%
   group_by(Stressor, Sample_ID, taxon) %>%
   summarize(rel_abund = sum(rel_abund), .groups="drop") %>%
@@ -1266,7 +1538,7 @@ observed_asvs_full <- rarefied_asv_table_full[,-1] %>%
   as_tibble(rownames = "Sample_ID") %>%
   select(Sample_ID, Obs_ASVs=value)
 
-#write.table(observed_asvs_full, file = "Emerson Aim 3 - no. observed asvs full.csv", sep = "," )
+#write.table(observed_asvs_full, file = "LAST Aim 3 - no. observed asvs full.csv", sep = "," )
 
 ## Shannon Diversity Index
 
@@ -1292,7 +1564,7 @@ rarefied_shannon_full <- replicate (100, shannon_iteration()) %>%
   group_by(Sample_ID) %>%
   summarize(shannon = mean(value))
 
-#write.table(rarefied_shannon_full, file = "Emerson Aim 3 - shannon diversity full.csv", sep = "," )
+#write.table(rarefied_shannon_full, file = "LAST Aim 3 - shannon diversity full.csv", sep = "," )
 
 ## Faiths Phylogenetic Diversity
 # #https://search.r-project.org/CRAN/refmans/abdiv/html/faith_pd.html
@@ -1306,7 +1578,7 @@ Faith_PD_full <- pd(faiths.df.full, phy_tree(ps), include.root = TRUE)
 #These are our faiths phylogenetic diversity values!
 #SR represents species richness values, but we will keep our other ones
 
-#write.table(Faith_PD_full, file = "Emerson Aim 3 - Faiths PD Full.csv", sep = "," )
+#write.table(Faith_PD_full, file = "LAST Aim 3 - Faiths PD Full.csv", sep = "," )
 
 
 ########## Alpha Diversity Metrics - Gut
@@ -1317,7 +1589,7 @@ observed_asvs_gut <- rarefied_asv_table_gut[,-1] %>%
   as_tibble(rownames = "Sample_ID") %>%
   select(Sample_ID, Obs_ASVs=value)
 
-#write.table(observed_asvs_gut, file = "Emerson Aim 3 - no. observed gut asvs.csv", sep = "," )
+#write.table(observed_asvs_gut, file = "LAST Aim 3 - no. observed gut asvs.csv", sep = "," )
 
 ## Shannon Diversity Index
 
@@ -1345,7 +1617,7 @@ rarefied_shannon_gut <- replicate (100, shannon_iteration()) %>%
   group_by(Sample_ID) %>%
   summarize(shannon = mean(value))
 
-#write.table(rarefied_shannon_gut, file = "Emerson Aim 3 - shannon gut diversity.csv", sep = "," )
+#write.table(rarefied_shannon_gut, file = "LAST Aim 3 - shannon gut diversity.csv", sep = "," )
 
 ## Faiths Phylogenetic Diversity
 # #https://search.r-project.org/CRAN/refmans/abdiv/html/faith_pd.html
@@ -1359,7 +1631,7 @@ Faith_PD_gut <- pd(faiths.df.gut, phy_tree(ps), include.root = TRUE)
 #These are our faiths phylogenetic diversity values!
 #SR represents species richness values, but we will keep our other ones
 
-#write.table(Faith_PD_gut, file = "Emerson Aim 3 - Final FaithsPD.csv", sep = "," )
+#write.table(Faith_PD_gut, file = "LAST Aim 3 - Final FaithsPD.csv", sep = "," )
 
 ########## Alpha Diversity Metrics - Skin
 ## No. Observed ASVs - Skin
@@ -1369,7 +1641,7 @@ observed_asvs_skin <- rarefied_asv_table_skin[,-1] %>%
   as_tibble(rownames = "Sample_ID") %>%
   select(Sample_ID, Obs_ASVs=value)
 
-#write.table(observed_asvs_skin, file = "Emerson Aim 3 - no. observed skin asvs.csv", sep = "," )
+#write.table(observed_asvs_skin, file = "LAST Aim 3 - no. observed skin asvs.csv", sep = "," )
 
 ## Shannon Diversity Index
 
@@ -1395,7 +1667,7 @@ rarefied_shannon_skin <- replicate (100, shannon_iteration_skin()) %>%
   group_by(Sample_ID) %>%
   summarize(shannon = mean(value))
 
-#write.table(rarefied_shannon_skin, file = "Emerson Aim 3 - shannon skin diversity.csv", sep = "," )
+#write.table(rarefied_shannon_skin, file = "LAST Aim 3 - shannon skin diversity.csv", sep = "," )
 
 ## Faiths Phylogenetic Diversity
 # #https://search.r-project.org/CRAN/refmans/abdiv/html/faith_pd.html
@@ -1409,4 +1681,4 @@ Faith_PD_skin <- pd(faiths.df.skin, phy_tree(ps), include.root = TRUE)
 #These are our faiths phylogenetic diversity values!
 #SR represents species richness values, but we will keep our other ones
 
-#write.table(Faith_PD_skin, file = "Emerson Aim 3 - Final skin FaithsPD.csv", sep = "," )
+#write.table(Faith_PD_skin, file = "LAST Aim 3 - Final skin FaithsPD.csv", sep = "," )
